@@ -9,5 +9,6 @@ require (
 	github.com/onsi/gomega v1.10.2 // indirect
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.7.0 // indirect
+	github.com/spaolacci/murmur3 v1.1.0
 	github.com/xwb1989/sqlparser v0.0.0-20180606152119-120387863bf2
 )
