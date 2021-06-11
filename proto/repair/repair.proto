@@ -1,0 +1,118 @@
+//protoc -I . -I /usr/local/include --micro_out=. --go_out=. repair.proto
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package repair;
+
+service QuoteRepair {
+    rpc RepairKline(RepairRequest) returns (RepairResponse) {}
+    rpc RepairMonthKline(RepairRequest) returns (RepairResponse) {}
+    rpc RepairTimeShares(RepairRequest) returns (RepairResponse) {}
+    rpc SyncFutuStock(SyncFutuStockRequest) returns (SyncFutuStockResponse) {}
+    rpc GetProgress(ProgressRequest) returns (ProgressResponse) {}
+    rpc StopProgress(ProgressRequest) returns (ProgressResponse) {}
+    rpc SetKlineHistory(RepairRequest) returns (RepairResponse) {}
+    rpc SetPlateIndexHistory(PlateIndexRequest) returns (PlateIndexResponse) {}
+    rpc SetPlateIndexKline(PlateIndexRequest) returns (PlateIndexResponse) {}
+    rpc RepairPrice(RepairRequest) returns(RepairResponse) {}
+    rpc RepairAHKlines(RepairRequest) returns(RepairResponse){}
+    rpc RepairTradeDetails(RepairRequest) returns(RepairResponse) {}
+    rpc RepairForwardAdjKlines(RepairRequest) returns (RepairResponse) {}
+    rpc StockModification(StockModificationRequest) returns(StockModificationResponse) {}
+    rpc SetShortTradeHistory(SetShortDataRequest) returns(SetShortDataResponse) {}
+    rpc SetShortPositionHistory(SetShortDataRequest) returns(SetShortDataResponse) {}
+    rpc UpdateShortTrade(google.protobuf.Empty) returns(SetShortDataResponse) {}
+    rpc UpdateShortPosition(google.protobuf.Empty) returns(SetShortDataResponse) {}
+}
+
+message FixKV {
+    string key = 1;
+    string val = 2;
+}
+
+message RepairRequest {
+    string source = 1;
+    string market = 2;
+    repeated string counter_ids = 3;
+    int64 start = 4;
+    int64 end = 5;
+    int64 line_type = 6;
+    int64 workers = 7;
+    repeated FixKV fix_kvs = 8;
+    bool repair_all = 9;
+}
+
+message RepairResponse {
+    int64 code = 1;
+    string err_msg = 2;
+    int64 progress_id = 3;
+}
+
+message ProgressRequest {
+  int64 progress_id = 1;
+}
+
+enum Status {
+    PROCESSING = 0;
+    SUCCESS = 1;
+    FAILED = 2;
+    ABANDON = 3;
+}
+
+message ProgressResponse {
+    int64 code = 1;
+    string err_msg = 2;
+    Status status = 3;
+    int64 success = 4;
+    int64 failed = 5;
+    int64 total = 6;
+    repeated string failed_stocks = 7;
+}
+
+message SyncFutuStockRequest {
+    string market = 1;
+}
+
+message SyncFutuStockResponse {
+    int64 code = 1;
+    string err_msg = 2;
+    Status status = 3;
+}
+
+message PlateIndexRequest {
+  string counter_id = 1;
+  string ipo_date = 2;
+  bool is_auto = 3;
+  bool is_force = 4;
+}
+
+message PlateIndexResponse {
+    uint32 code = 1;
+    string err_msg = 2;
+    Status  status = 3;
+}
+
+message StockModificationRequest{
+    string old_counter_id = 1;
+    string new_counter_id = 2;
+    int64 modify_timestamp = 3;
+    string market = 4;
+    bool is_force = 5;
+    bool clearDest = 6;
+}
+
+message StockModificationResponse{
+    uint32 code = 1;
+    string err_msg = 2;
+    Status  status = 3;
+}
+
+message SetShortDataRequest{
+    string start_date = 1;
+}
+
+message SetShortDataResponse{
+    uint32 code = 1;
+    string err_msg = 2;
+    Status  status = 3;
+}
