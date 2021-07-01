@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/shopspring/decimal"
 	"time"
 )
 
@@ -50,6 +52,7 @@ func main(){
 	//_,_, d,_,_,_ := TimeDiff(time.Unix(t1, 0), time.Now())
 	//fmt.Println("相差%d", d)
 
+	Decimal("14.8997")
 
 }
 
@@ -117,4 +120,10 @@ func TimeDiff(a, b time.Time) (year, month, day, hour, min, sec int) {
 	}
 
 	return
+}
+
+func Decimal(data string) {
+	yh, _ := decimal.NewFromString(data)
+	y := yh.Round(3).StringFixed(3)
+	fmt.Printf("parse:%v", y)
 }
